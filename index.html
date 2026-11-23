@@ -1,0 +1,346 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minhas Avaliações</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #10131c;
+    color: #fff;
+    padding: 30px 15px;
+}
+
+.container {
+    max-width: 750px;
+    margin: auto;
+}
+
+header {
+    margin-bottom: 25px;
+}
+
+header h1 {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+header p {
+    color: #929bad;
+}
+
+.painel {
+    background: #1b2030;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    border: 1px solid #30384c;
+}
+
+.numeros {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.numero {
+    background: #252c40;
+    padding: 15px;
+    border-radius: 10px;
+    flex: 1;
+    text-align: center;
+}
+
+.numero h2 {
+    font-size: 25px;
+    color: #70a5ff;
+}
+
+.numero p {
+    font-size: 12px;
+    color: #aab3c5;
+    margin-top: 5px;
+}
+
+.barra {
+    height: 9px;
+    background: #343c50;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progresso {
+    height: 100%;
+    width: 0%;
+    background: #56d6a0;
+    transition: .3s;
+}
+
+.secao {
+    margin-bottom: 25px;
+}
+
+.secao h2 {
+    font-size: 18px;
+    margin-bottom: 12px;
+    color: #83aaff;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    background: #1b2030;
+    border: 1px solid #30384c;
+    padding: 15px;
+    border-radius: 11px;
+    margin-bottom: 9px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.item:hover {
+    background: #252c40;
+    transform: translateY(-2px);
+}
+
+.item input {
+    width: 19px;
+    height: 19px;
+    accent-color: #56d6a0;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.info {
+    flex: 1;
+}
+
+.nome {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.data {
+    color: #929bad;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.concluido .nome {
+    text-decoration: line-through;
+    color: #788396;
+}
+
+.concluido {
+    opacity: .6;
+}
+
+.tipo {
+    font-size: 10px;
+    padding: 5px 8px;
+    border-radius: 20px;
+    background: #303c59;
+    color: #9cbdff;
+}
+
+footer {
+    text-align: center;
+    color: #68748a;
+    font-size: 12px;
+    margin-top: 30px;
+}
+
+button {
+    background: #303c59;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+button:hover {
+    background: #40547c;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+    <h1>📚 Minhas Avaliações</h1>
+    <p>Organização final do trimestre • Novembro e Dezembro</p>
+</header>
+
+<div class="painel">
+    <div class="numeros">
+        <div class="numero">
+            <h2 id="total">16</h2>
+            <p>Total</p>
+        </div>
+        <div class="numero">
+            <h2 id="feitas">0</h2>
+            <p>Concluídas</p>
+        </div>
+        <div class="numero">
+            <h2 id="faltam">16</h2>
+            <p>Pendentes</p>
+        </div>
+    </div>
+
+    <div class="barra">
+        <div class="progresso" id="progresso"></div>
+    </div>
+
+    <p id="porcentagem" style="margin-top:10px;color:#aab3c5;font-size:12px">
+        0% concluído
+    </p>
+</div>
+
+<div id="lista"></div>
+
+<button onclick="limpar()">Desmarcar todas</button>
+
+<footer>
+    Um passo de cada vez. Bora fechar o trimestre! 🚀
+</footer>
+
+</div>
+
+<script>
+const atividades = [
+    {
+        secao: "📅 Novembro — Provas",
+        itens: [
+            ["Questões de Matemática", "20/11", "Lista"],
+            ["Prova de Química", "23/11", "Prova"],
+            ["Prova de Física", "24/11", "Prova"],
+            ["Apresentação Algoritmos", "24/11", "Apresentação"],
+            ["Prova de Sociologia", "25/11", "Prova"],
+            ["Prova de História", "26/11", "Prova"],
+            ["Prova de Introdução", "26/11", "Prova"],
+            ["Podcast de Ed. Física", "26 ou 27/11", "Trabalho"],
+            ["Prova de Inglês", "27/11", "Prova"]
+        ]
+    },
+    {
+        secao: "📝 Novembro e Dezembro — Trabalhos",
+        itens: [
+            ["Lista de Física", "29/11", "Lista"],
+            ["Relatório de Química", "30/11", "Relatório"],
+            ["RP de Física", "01/12", "RP"],
+            ["Trabalho Eletro", "02/12", "Trabalho"],
+            ["Pop Art Sociologia", "02/12", "Trabalho"],
+            ["RP de Inglês", "04/12", "RP"],
+            ["RP de Química", "07/12", "RP"],
+            ["Prova de Algoritmos", "08/12", "Prova"]
+        ]
+    }
+];
+
+const lista = document.getElementById("lista");
+
+let estado = JSON.parse(localStorage.getItem("avaliacoes")) || {};
+
+function renderizar() {
+    lista.innerHTML = "";
+
+    atividades.forEach((grupo, g) => {
+        const secao = document.createElement("div");
+        secao.className = "secao";
+
+        const titulo = document.createElement("h2");
+        titulo.textContent = grupo.secao;
+        secao.appendChild(titulo);
+
+        grupo.itens.forEach((item, i) => {
+            const id = g + "-" + i;
+
+            const linha = document.createElement("label");
+            linha.className = "item" + (estado[id] ? " concluido" : "");
+
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.checked = !!estado[id];
+
+            checkbox.addEventListener("change", () => {
+                estado[id] = checkbox.checked;
+                localStorage.setItem("avaliacoes", JSON.stringify(estado));
+                atualizar();
+            });
+
+            const info = document.createElement("div");
+            info.className = "info";
+
+            const nome = document.createElement("div");
+            nome.className = "nome";
+            nome.textContent = item[0];
+
+            const data = document.createElement("div");
+            data.className = "data";
+            data.textContent = "📌 " + item[1];
+
+            info.appendChild(nome);
+            info.appendChild(data);
+
+            const tipo = document.createElement("span");
+            tipo.className = "tipo";
+            tipo.textContent = item[2];
+
+            linha.appendChild(checkbox);
+            linha.appendChild(info);
+            linha.appendChild(tipo);
+
+            secao.appendChild(linha);
+        });
+
+        lista.appendChild(secao);
+    });
+
+    atualizarNumeros();
+}
+
+function atualizarNumeros() {
+    const total = atividades.reduce((s, g) => s + g.itens.length, 0);
+    const feitas = Object.values(estado).filter(Boolean).length;
+    const porcentagem = Math.round((feitas / total) * 100);
+
+    document.getElementById("total").textContent = total;
+    document.getElementById("feitas").textContent = feitas;
+    document.getElementById("faltam").textContent = total - feitas;
+    document.getElementById("progresso").style.width = porcentagem + "%";
+    document.getElementById("porcentagem").textContent =
+        porcentagem + "% concluído";
+}
+
+function atualizar() {
+    renderizar();
+}
+
+function limpar() {
+    if (confirm("Deseja desmarcar todas as atividades?")) {
+        estado = {};
+        localStorage.removeItem("avaliacoes");
+        renderizar();
+    }
+}
+
+renderizar();
+</script>
+
+</body>
+</html>
